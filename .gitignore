@@ -1,0 +1,18 @@
+# System
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Rust
+/target/
+**/*.rs.bk
+
+# Binary
+/bin/aurynx-discovery
+/bin/aurynx-discovery.exe
+*.exe

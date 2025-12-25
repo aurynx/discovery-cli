@@ -1,0 +1,62 @@
+[package]
+name = "aurynx"
+version = "0.2.0"
+edition = "2024"
+description = "High-performance PHP attribute discovery CLI tool powered by tree-sitter"
+repository = "https://github.com/aurynx/discovery-cli"
+license = "MIT"
+keywords = ["php", "attributes", "discovery", "cli", "tree-sitter"]
+categories = ["command-line-utilities", "development-tools", "parsing"]
+
+[[bin]]
+name = "aurynx"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5.53", features = ["derive"] }
+rayon = "1.11.0"
+ignore = "0.4.25"
+tree-sitter = "0.26.3"
+tree-sitter-php = "0.24.2"
+notify = "8.2.0"
+notify-debouncer-mini = "0.5.0"
+dashmap = "6.1.0"
+anyhow = "1.0.100"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.147"
+tempfile = "3.23.0"
+tokio = { version = "1.48.0", features = ["rt", "rt-multi-thread", "signal", "sync", "macros", "net", "io-util", "time"] }
+libc = "0.2.178"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.22", features = ["json", "env-filter"] }
+tracing-appender = "0.2.4"
+fs2 = "0.4"
+xxhash-rust = { version = "0.8", features = ["xxh3"] }
+
+[dev-dependencies]
+glob = "0.3.3"
+
+[profile.release]
+opt-level = "z"      # Optimize for size
+lto = true           # Enable Link Time Optimization
+codegen-units = 1    # Better optimization (slower compile)
+strip = true         # Strip symbols from binary
+panic = "abort"      # Don't unwind on panic
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+# Safety & Error Handling
+unwrap_used = "deny"        # Force proper error handling (no .unwrap())
+expect_used = "deny"        # Force proper error handling (no .expect())
+panic = "deny"              # No panics in production code
+
+# Code Quality
+pedantic = { level = "warn", priority = -1 }           # Enable strict linting
+nursery = { level = "warn", priority = -1 }            # Enable experimental lints
+cargo = { level = "warn", priority = -1 }              # Cargo.toml lints
+
+# Allowed specific lints (exceptions)
+module_name_repetitions = "allow" # Common in Rust (e.g. ConfigFile::load)
+multiple_crate_versions = "allow" # Hard to avoid with dependencies

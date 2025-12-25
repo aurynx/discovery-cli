@@ -1,0 +1,20 @@
+# Rustfmt configuration
+edition = "2024"
+max_width = 100
+tab_spaces = 4
+newline_style = "Unix"
+
+# Imports
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+
+# Functions
+fn_params_layout = "Compressed"
+
+# Matching
+match_block_trailing_comma = true
+
+# Comments
+wrap_comments = true
+comment_width = 80
+normalize_comments = true
