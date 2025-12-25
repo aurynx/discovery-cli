@@ -247,7 +247,7 @@ fn test_concurrent_daemon_startup_atomicity() {
     thread::sleep(Duration::from_millis(500));
 
     // Analyze results
-    let results = results.lock().unwrap();
+    let mut results = results.lock().unwrap();
     let running_count = results.iter().filter(|(_, running, _, _)| *running).count();
     let failed_count = results
         .iter()
@@ -298,24 +298,13 @@ fn test_concurrent_daemon_startup_atomicity() {
     }
 
     // Cleanup: kill the running daemon
-    for (_, running, _, child) in results.iter() {
+    for (_, running, _, child) in results.iter_mut() {
         if *running {
-            // Send SIGTERM to gracefully shutdown
-            #[cfg(unix)]
-            {
-                unsafe {
-                    libc::kill(child.id() as i32, libc::SIGTERM);
-                }
-            }
-
-            #[cfg(not(unix))]
-            {
-                let _ = Command::new("taskkill")
-                    .args(&["/PID", &child.id().to_string(), "/F"])
-                    .output();
-            }
+            // Kill the daemon process
+            let _ = child.kill();
         }
     }
+    drop(results);
 
     // Give it time to cleanup
     thread::sleep(Duration::from_millis(500));

@@ -20,7 +20,7 @@ fn test_ipc_large_request_error_is_text() {
     let pid_file = temp_dir.path().join("daemon.pid");
 
     // Find binary
-    let binary = std::env::current_dir()
+    let _binary = std::env::current_dir()
         .unwrap()
         .join("target")
         .join("debug")

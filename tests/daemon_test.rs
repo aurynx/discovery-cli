@@ -94,16 +94,7 @@ fn test_daemon_pid_file_creation() {
     );
 
     // Kill daemon
-    #[cfg(unix)]
-    {
-        unsafe {
-            libc::kill(child.id() as i32, libc::SIGTERM);
-        }
-    }
-    #[cfg(not(unix))]
-    {
-        let _ = child.kill();
-    }
+    let _ = child.kill();
 
     // Wait for cleanup
     let _ = child.wait();

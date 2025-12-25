@@ -1,7 +1,6 @@
 use std::io::{BufRead, BufReader, Write};
 use std::os::unix::net::UnixStream;
-use std::path::PathBuf;
-use std::process::{Child, Command};
+use std::process::Command;
 use std::thread;
 use std::time::Duration;
 
